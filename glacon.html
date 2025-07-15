@@ -1,0 +1,155 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Glaçons – Et si BRITA n’existait pas ?</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      font-family: Verdana, sans-serif;
+      background-color: #000;
+    }
+
+    .slider-container {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    .image-wrapper {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .image-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .image-top {
+      width: 100%;
+      height: 100%;
+      clip-path: inset(0 50% 0 0);
+      transition: clip-path 0.1s ease-out;
+    }
+
+    .slider-bar {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 4px;
+      height: 100%;
+      background-color: #ffffffaa;
+      cursor: ew-resize;
+      touch-action: none;
+      z-index: 10;
+    }
+
+    .label {
+      position: absolute;
+      top: 20px;
+      font-size: 1.8rem;
+      color: white;
+      background-color: rgba(0,0,0,0.5);
+      padding: 10px 20px;
+      border-radius: 10px;
+      z-index: 20;
+    }
+
+    .label-left {
+      left: 20px;
+    }
+
+    .label-right {
+      right: 20px;
+    }
+
+    .back-button {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      z-index: 30;
+      background-color: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      border: 1px solid #fff;
+      padding: 10px 16px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 1rem;
+      transition: background-color 0.3s ease;
+    }
+
+    .back-button:hover {
+      background-color: rgba(255, 255, 255, 0.3);
+    }
+  </style>
+</head>
+<body>
+
+<a class="back-button" href="index.html">← Retour à l'accueil</a>
+
+<div class="slider-container" id="slider">
+  <div class="label label-left">Sans BRITA</div>
+  <div class="label label-right">Avec BRITA</div>
+
+  <div class="image-wrapper">
+    <img src="https://cdn.glitch.global/8226516a-d8c6-4b90-a9e8-a48fc77684f9/ChatGPT%20Image%203%20juil.%202025%2C%2017_29_15.png?v=1751556570991" alt="Sans BRITA">
+  </div>
+  <div class="image-wrapper image-top" id="topImage">
+    <img src="https://cdn.glitch.global/8226516a-d8c6-4b90-a9e8-a48fc77684f9/ChatGPT%20Image%203%20juil.%202025%2C%2017_29_11.png?v=1751556584657" alt="Avec BRITA">
+  </div>
+  <div class="slider-bar" id="sliderBar"></div>
+</div>
+
+<script>
+  const sliderBar = document.getElementById("sliderBar");
+  const topImage = document.getElementById("topImage");
+  const slider = document.getElementById("slider");
+
+  let isDragging = false;
+
+  function updateSlider(x) {
+    const rect = slider.getBoundingClientRect();
+    let position = x - rect.left;
+    position = Math.max(0, Math.min(position, rect.width));
+    const percent = (position / rect.width) * 100;
+    topImage.style.clipPath = `inset(0 ${100 - percent}% 0 0)`;
+    sliderBar.style.left = `${percent}%`;
+  }
+
+  slider.addEventListener("mousedown", (e) => {
+    isDragging = true;
+    updateSlider(e.clientX);
+  });
+
+  slider.addEventListener("touchstart", (e) => {
+    isDragging = true;
+    updateSlider(e.touches[0].clientX);
+  });
+
+  window.addEventListener("mousemove", (e) => {
+    if (isDragging) updateSlider(e.clientX);
+  });
+
+  window.addEventListener("touchmove", (e) => {
+    if (isDragging) updateSlider(e.touches[0].clientX);
+  });
+
+  window.addEventListener("mouseup", () => {
+    isDragging = false;
+  });
+
+  window.addEventListener("touchend", () => {
+    isDragging = false;
+  });
+</script>
+
+</body>
+</html>
